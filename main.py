@@ -2,9 +2,16 @@ import requests
 import csv
 from datetime import datetime
 import time
+import chardet
 
-# Load the list of game names from a text file
-with open('games_list.txt', 'r', encoding='ISO-8859-1') as file:
+# Detect encoding
+with open('games_list.txt', 'rb') as file:
+    result = chardet.detect(file.read())
+    encoding = result['encoding']
+    print(f"Detected encoding: {encoding}")
+
+# Load the list of game names using the detected encoding
+with open('games_list.txt', 'r', encoding=encoding) as file:
     games = [line.strip().replace('™', '') for line in file if line.strip()]
 
 no_page = []
