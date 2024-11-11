@@ -11,8 +11,26 @@ with open('games_list.txt', 'rb') as file:
     print(f"Detected encoding: {encoding}")
 
 # Load the list of game names using the detected encoding
-with open('games_list.txt', 'r', encoding=encoding) as file:
-    games = [line.strip().replace('™', '') for line in file if line.strip()]
+games = []
+bad_lines = []
+
+with open('games_list.txt', 'r', encoding=encoding, errors='strict') as file:
+    for line_number, line in enumerate(file, start=1):
+        try:
+            clean_line = line.strip().replace('™', '')
+            if clean_line:
+                games.append(clean_line)
+        except UnicodeDecodeError as e:
+            print(f"Error decoding line {line_number}: {e}")
+            bad_lines.append((line_number, line))
+
+# Output bad lines if any
+if bad_lines:
+    print("\nProblematic lines:")
+    for line_number, line in bad_lines:
+        print(f"Line {line_number}: {line}")
+else:
+    print("All lines decoded successfully.")
 
 no_page = []
 possible_page = []
