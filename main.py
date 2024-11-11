@@ -4,7 +4,7 @@ from datetime import datetime
 import time
 
 # Load the list of game names from a text file
-with open('games.txt', 'r', encoding='utf-8') as file:
+with open('games_list.txt', 'r', encoding='ISO-8859-1') as file:
     games = [line.strip().replace('™', '') for line in file if line.strip()]
 
 no_page = []
